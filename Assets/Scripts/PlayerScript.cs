@@ -11,7 +11,9 @@ public class PlayerScript : MonoBehaviour
     public Rigidbody Playerrb;
     public Animator Playeranim;
 
-    
+    public GameObject bulletPrefab;
+    public GameObject bulletSpawn;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +24,7 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         movement();
-        //submovement();
+        
     }
     void movement()
     {
@@ -65,24 +67,11 @@ public class PlayerScript : MonoBehaviour
         {
             Playeranim.SetBool("isrun", false);
         }
-    }
-
-    void submovement()
-    {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
-        transform.Rotate(new Vector3(0, h * rotatespeed, 0));
-
-        Playerrb.AddForce(v * transform.forward * movespeed);
-
-        Playerrb.velocity = new Vector3(Mathf.Clamp(Playerrb.velocity.x, -maxspeed, maxspeed),
-            Mathf.Clamp(Playerrb.velocity.y, -maxspeed, maxspeed),
-            Mathf.Clamp(Playerrb.velocity.z, -maxspeed, maxspeed));
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            
+            Playeranim.SetTrigger("Fire");
         }
     }
+
+   
 }
