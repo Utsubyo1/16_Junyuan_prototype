@@ -7,7 +7,10 @@ public class PlayerScript : MonoBehaviour
     float movespeed = 5f;
     float rotatespeed = 2f;
 
-    int maxspeed = 5;
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    public HealthbarScript healthBar;
     public Rigidbody Playerrb;
     public Animator Playeranim;
 
@@ -17,7 +20,8 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
@@ -70,8 +74,14 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Playeranim.SetTrigger("Fire");
+            takeDamage(20);
+            
         }
     }
 
-   
+   void takeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+    }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamareScript : MonoBehaviour
+public class CameraScript : MonoBehaviour
 {
     [SerializeField]
     private Transform target;
