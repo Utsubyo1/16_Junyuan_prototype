@@ -81,9 +81,9 @@ public class PlayerScript : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Playeranim.SetTrigger("Fire");
-            takeDamage(10);
-            Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
+            Instantiate(bulletPrefab, bulletSpawn.transform.position, transform.rotation);
+            Playeranim.SetTrigger("Fire");  
+           // Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
         }
     }
 
