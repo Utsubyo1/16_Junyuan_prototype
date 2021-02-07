@@ -5,18 +5,19 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
+    
     //movement and rotate speed
-    float movespeed = 5f;
-    float rotatespeed = 2f;
+    float movespeed = 5f; // movement speed
+    float rotatespeed = 2f; // rotatespeed
 
     //Ammo count
-    public int maxAmmo = 5;
-    private int currentAmmo;
-    public float reloadtime = 10f;
-    private bool isreloading = false;
+    public int maxAmmo = 7; // maxammo
+    private int currentAmmo; // current ammo
+    public float reloadtime = 10f; // time for reload
+    private bool isreloading = false; 
 
-    public int maxHealth = 100;
-    public int currentHealth;
+    public int maxHealth = 100; // max health
+    int currentHealth; // current health
 
     
     public AudioClip[] AudioClipsArr;
@@ -30,6 +31,9 @@ public class PlayerScript : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject bulletSpawn;
 
+    bool isdead = false;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +45,8 @@ public class PlayerScript : MonoBehaviour
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
+
+       
     }
 
     // Update is called once per frame
@@ -62,20 +68,22 @@ public class PlayerScript : MonoBehaviour
         if(currentHealth == 0)
         {
             Playeranim.SetTrigger("Death");
+            isdead = true;
+            
         }
     }
     void movement()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && isdead == false)
         {
             transform.Translate(Vector3.forward * Time.deltaTime * movespeed);
             //transform.rotation = Quaternion.Euler(0, 0, 0);
             Playeranim.SetBool("isrun", true);
             
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S) && isdead == false)
         {
             transform.Translate(Vector3.back * Time.deltaTime * movespeed);
             //transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -87,16 +95,16 @@ public class PlayerScript : MonoBehaviour
             Playeranim.SetBool("isrun", false);
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) && isdead == false)
         {
-            transform.Translate(Vector3.left * Time.deltaTime * movespeed);
+            //transform.Translate(Vector3.left * Time.deltaTime * movespeed);
             //transform.rotation = Quaternion.Euler(0, -90, 0);
             transform.Rotate(new Vector3(0, h * rotatespeed, 0));
             Playeranim.SetBool("isrun", true);
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) && isdead == false)
         {
-            transform.Translate(Vector3.right * Time.deltaTime * movespeed);
+            //transform.Translate(Vector3.right * Time.deltaTime * movespeed);
             //transform.rotation = Quaternion.Euler(0, 90, 0);
             transform.Rotate(new Vector3(0, h * rotatespeed, 0));
             Playeranim.SetBool("isrun", true);
@@ -105,7 +113,7 @@ public class PlayerScript : MonoBehaviour
         {
             Playeranim.SetBool("isrun", false);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && isreloading == false)
+        if (Input.GetKeyDown(KeyCode.Space) && isreloading == false && isdead == false)
         {
             Instantiate(bulletPrefab, bulletSpawn.transform.position, transform.rotation);
             Playeranim.SetTrigger("Fire");
@@ -140,4 +148,6 @@ public class PlayerScript : MonoBehaviour
             Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
         }
     }
+
+   
 }
