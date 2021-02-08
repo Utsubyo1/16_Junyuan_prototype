@@ -19,6 +19,9 @@ public class EnemySpawnerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+
+        //Will spawn after a time
         StartCoroutine(WaitAndSpawn(spawnInterval));
         PlayerScript.Playerdeath = false;
         
@@ -27,22 +30,24 @@ public class EnemySpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemycount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        if(enemycount == 5)
-        {
-            stopspawn = true;
-        }
+        
     }
-    
+
     private IEnumerator WaitAndSpawn(float waitTime)
     {
+        
         enemycount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        if (enemycount >= 5)
+        if (enemycount > 5)
         {
             stopspawn = true;
         }
-        if (stopspawn == false)
+        else
         {
+            stopspawn = false;
+        }
+        if (PauseMenuScript.GameisPaused == false && stopspawn ==false)
+
+        {// when player not dead will spawn
             while (PlayerScript.Playerdeath == false)
             {
                 yield return new WaitForSeconds(waitTime);
@@ -53,6 +58,7 @@ public class EnemySpawnerScript : MonoBehaviour
 
 
             }
+
         }
     }
   

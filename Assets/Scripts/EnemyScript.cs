@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class EnemyScript : MonoBehaviour
 {
+    public static bool nodmg = false;
     //target Player
     GameObject target;
-
+    //find Hpbar canvas
     public GameObject hpbar;
     //healthbar and text
     public Text Hptext;
@@ -38,6 +39,7 @@ public class EnemyScript : MonoBehaviour
         target = GameObject.Find("Player"); //find Player name 
 
         PlayerScript.Playerdeath = false;
+
     }
 
      void Update()
@@ -47,8 +49,9 @@ public class EnemyScript : MonoBehaviour
             Die();
             
             isdead = true;
-            
+
         }
+       
 
         if (PlayerScript.Playerdeath == true)
         {
@@ -59,7 +62,7 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (PlayerScript.Playerdeath == false && isdead == false)
+        if (PlayerScript.Playerdeath == false && isdead == false && PauseMenuScript.GameisPaused == false)
         {
             //Enmey move towards the player
             Vector3 pos = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.fixedDeltaTime);
@@ -90,11 +93,15 @@ public class EnemyScript : MonoBehaviour
     {
         if (!isdead)
         {
+            PlayerScript.Score.AddScore();
+
+            //when enemy lose all Hp destroy Hp text first then destory gameobject
             enemyanim.SetTrigger("Death");
             Destroy(hpbar);
-            
+            nodmg = true;
             Destroy(gameObject, 2);
             isdead = true;
+            nodmg = false;
         }
     }
 }
