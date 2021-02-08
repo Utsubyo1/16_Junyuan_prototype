@@ -7,13 +7,13 @@ public class EnemyScript : MonoBehaviour
 {
     //target Player
     GameObject target;
-    
 
+    public GameObject hpbar;
     //healthbar and text
     public Text Hptext;
     public HealthbarScript healthBar;
 
-    int maxHealth = 100; // Max health
+    int maxHealth = 50; // Max health
     int currentHealth; // current health
 
     public float deathtime = 10f; // deathTime
@@ -21,38 +21,51 @@ public class EnemyScript : MonoBehaviour
     
     float speed = 1f; // move speed
     Rigidbody rb;
+    Animator enemyanim;
+
+    bool isdead = false;
 
     // Use this for initialization
     void Start()
     {
         rb = this.GetComponent<Rigidbody>();
+        enemyanim = this.GetComponent<Animator>();
         
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
 
         target = GameObject.Find("Player"); //find Player name 
-        
-        
+
+        PlayerScript.Playerdeath = false;
     }
 
      void Update()
     {
-        if(currentHealth == 0)
+        if(currentHealth <= 0)
         {
-            Destroy(gameObject);
+            Die();
+            
+            isdead = true;
+            
         }
-        
+
+        if (PlayerScript.Playerdeath == true)
+        {
+            Destroy(this);
+        }
        
     }
     // Update is called once per frame
     void FixedUpdate()
     {
-         //Enmey move towards the player
-          Vector3 pos = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.fixedDeltaTime);
-          rb.MovePosition(pos);
-          transform.LookAt(target.transform.position);
-        
+        if (PlayerScript.Playerdeath == false && isdead == false)
+        {
+            //Enmey move towards the player
+            Vector3 pos = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.fixedDeltaTime);
+            rb.MovePosition(pos);
+            transform.LookAt(target.transform.position);
+        }
     }
 
     void takeDamage(int damage)
@@ -73,5 +86,15 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    
+    void Die()
+    {
+        if (!isdead)
+        {
+            enemyanim.SetTrigger("Death");
+            Destroy(hpbar);
+            
+            Destroy(gameObject, 2);
+            isdead = true;
+        }
+    }
 }

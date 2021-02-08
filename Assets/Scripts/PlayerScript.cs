@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
+    public static bool Playerdeath;
     
     //movement and rotate speed
     float movespeed = 5f; // movement speed
@@ -46,14 +47,14 @@ public class PlayerScript : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
 
-       
+        Playerdeath = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        movement();
+        if (isdead == false)
+        { movement(); }
 
         if (isreloading)
             return;
@@ -65,9 +66,10 @@ public class PlayerScript : MonoBehaviour
         }
 
         //Player death
-        if(currentHealth == 0)
+        if(currentHealth <= 0)
         {
-            Playeranim.SetTrigger("Death");
+            Playerdeath = true;
+            Die();
             isdead = true;
             
         }
@@ -113,13 +115,19 @@ public class PlayerScript : MonoBehaviour
         {
             Playeranim.SetBool("isrun", false);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && isreloading == false && isdead == false)
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0) && isreloading == false )
         {
             Instantiate(bulletPrefab, bulletSpawn.transform.position, transform.rotation);
             Playeranim.SetTrigger("Fire");
             currentAmmo--;
             audiosource.PlayOneShot(AudioClipsArr[0]);
             audiosource.volume = 0.5f;
+        }
+
+        if(Input.GetKeyDown(KeyCode.R) && isreloading == false && isdead == false && currentAmmo <= 9)
+        {
+            StartCoroutine(Reload());
+            return;
         }
     }
 
@@ -148,6 +156,14 @@ public class PlayerScript : MonoBehaviour
             Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
         }
     }
-
+    void Die()
+    {
+        if (!isdead)
+        {
+            Playeranim.SetTrigger("Death");
+            Destroy(gameObject, 10);
+            isdead = true;
+        }
+    }
    
 }
