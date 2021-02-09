@@ -52,7 +52,7 @@ public class EnemySpawnerScript : MonoBehaviour
             {
                 yield return new WaitForSeconds(waitTime);
 
-                Vector3 spawnPos = new Vector3(Random.Range(minX, maxX), 0.5f, Random.Range(minZ, maxZ));
+                Vector3 spawnPos = new Vector3(Random.Range(minX, maxX), 0f, Random.Range(minZ, maxZ));
                 Instantiate(EnemyPrefab, spawnPos, Quaternion.identity);
 
 
