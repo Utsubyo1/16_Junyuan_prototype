@@ -19,10 +19,12 @@ public class EnemyScript : MonoBehaviour
 
     public float deathtime = 10f; // deathTime
 
-    
+
     float speed = 5f; // move speed
     Rigidbody rb;
     Animator enemyanim;
+    AudioSource audiosource;
+    public AudioClip[] audioclipArr;
 
     bool isdead = false;
 
@@ -31,6 +33,7 @@ public class EnemyScript : MonoBehaviour
     {
         rb = this.GetComponent<Rigidbody>();
         enemyanim = this.GetComponent<Animator>();
+        audiosource = this.GetComponent<AudioSource>();
         
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
@@ -68,6 +71,7 @@ public class EnemyScript : MonoBehaviour
             Vector3 pos = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.fixedDeltaTime);
             rb.MovePosition(pos);
             transform.LookAt(target.transform.position);
+            
         }
     }
 
@@ -85,6 +89,7 @@ public class EnemyScript : MonoBehaviour
             takeDamage(10);
             Destroy(collision.gameObject);
             Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
+            audiosource.PlayOneShot(audioclipArr[0]);
             //Debug.Log(maxHealth + "/" + currentHealth);
         }
     }
@@ -94,12 +99,12 @@ public class EnemyScript : MonoBehaviour
         if (!isdead)
         {
             PlayerScript.Score.AddScore();
-
+            
             //when enemy lose all Hp destroy Hp text first then destory gameobject
             enemyanim.SetTrigger("Death");
             Destroy(hpbar);
             nodmg = true;
-            Destroy(gameObject, 1);
+            Destroy(gameObject, 2);
             isdead = true;
             nodmg = false;
         }

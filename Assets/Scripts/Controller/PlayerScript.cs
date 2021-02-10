@@ -12,16 +12,17 @@ public class PlayerScript : MonoBehaviour
     float movespeed = 5f; // movement speed
     float rotatespeed = 2f; // rotatespeed
 
-    //Ammo count
+    //Ammo 
     public int maxAmmo = 7; // maxammo
     private int currentAmmo; // current ammo
     public float reloadtime = 10f; // time for reload
     private bool isreloading = false; 
 
+    //Health
     public int maxHealth = 100; // max health
     int currentHealth; // current health
 
-    //ScoreCount
+    //zombie Count
     float Scorecount;
 
     //audio
@@ -31,6 +32,8 @@ public class PlayerScript : MonoBehaviour
     //Text
     public Text Hptext;
     public Text Scoretext;
+    public Text Ammotext;
+    
     public HealthbarScript healthBar;
 
 
@@ -50,6 +53,7 @@ public class PlayerScript : MonoBehaviour
     {
         //check adn set ammo when start
         currentAmmo = maxAmmo;
+        Ammotext.GetComponent<Text>().text = (maxAmmo + "/" + currentAmmo);
 
         audiosource = GetComponent<AudioSource>();
         //check, set and display health when start
@@ -58,7 +62,7 @@ public class PlayerScript : MonoBehaviour
         Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
 
         //set Text
-        Scoretext.GetComponent<Text>().text = "Score: " + Scorecount;
+        Scoretext.GetComponent<Text>().text = "Zombies Kill: " + Scorecount;
         if(Score == null)
         {
             Score = this;
@@ -82,6 +86,7 @@ public class PlayerScript : MonoBehaviour
             if (currentAmmo <= 0)
             {
                 StartCoroutine(Reload());
+                Ammotext.GetComponent<Text>().text = (maxAmmo + "/" + currentAmmo);
                 return;
             }
 
@@ -152,6 +157,7 @@ public class PlayerScript : MonoBehaviour
         {
             Instantiate(bulletPrefab, bulletSpawn.transform.position, transform.rotation);
             Playeranim.SetTrigger("Fire");
+            Ammotext.GetComponent<Text>().text = (maxAmmo + "/" + currentAmmo);
             currentAmmo--;
             audiosource.PlayOneShot(AudioClipsArr[0]);
             audiosource.volume = 0.5f;
@@ -172,6 +178,7 @@ public class PlayerScript : MonoBehaviour
         yield return new WaitForSeconds(reloadtime);
         audiosource.PlayOneShot(AudioClipsArr[1]);
         currentAmmo = maxAmmo;
+        Ammotext.GetComponent<Text>().text = (maxAmmo + "/" + currentAmmo);
         isreloading = false;
     }
    void takeDamage(int damage)
@@ -201,7 +208,7 @@ public class PlayerScript : MonoBehaviour
    
     public void AddScore()
     {
-        Scorecount += 10;
-        Scoretext.GetComponent<Text>().text = "Score :" + Scorecount;
+        Scorecount += 1;
+        Scoretext.GetComponent<Text>().text = "Zombies Kill:" + Scorecount;
     }
 }
