@@ -99,7 +99,7 @@ public class EnemyScript : MonoBehaviour
             enemyanim.SetTrigger("Death");
             Destroy(hpbar);
             nodmg = true;
-            Destroy(gameObject, 2);
+            Destroy(gameObject, 1);
             isdead = true;
             nodmg = false;
         }

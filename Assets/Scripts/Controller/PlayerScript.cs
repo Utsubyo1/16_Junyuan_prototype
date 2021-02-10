@@ -58,7 +58,7 @@ public class PlayerScript : MonoBehaviour
         Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
 
         //set Text
-        Scoretext.GetComponent<Text>().text = "Score" + Scorecount;
+        Scoretext.GetComponent<Text>().text = "Score: " + Scorecount;
         if(Score == null)
         {
             Score = this;
@@ -101,17 +101,15 @@ public class PlayerScript : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         //W,S will move player foward/backward
-        if (Input.GetKey(KeyCode.W) && isdead == false)
+        if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(Vector3.forward * Time.deltaTime * movespeed);
-            //transform.rotation = Quaternion.Euler(0, 0, 0);
             Playeranim.SetBool("isrun", true);
             
         }
-        else if (Input.GetKey(KeyCode.S) && isdead == false)
+        else if (Input.GetKey(KeyCode.S))
         {
             transform.Translate(Vector3.back * Time.deltaTime * movespeed);
-            //transform.rotation = Quaternion.Euler(0, 180, 0);
             Playeranim.SetBool("isrun", true);
 
         }
@@ -121,17 +119,15 @@ public class PlayerScript : MonoBehaviour
         }
 
         // A,D key will rotate Player angles
-        if (Input.GetKey(KeyCode.A) && isdead == false)
+        if (Input.GetKey(KeyCode.A))
         {
-            //transform.Translate(Vector3.left * Time.deltaTime * movespeed);
-            //transform.rotation = Quaternion.Euler(0, -90, 0);
+            
             transform.Rotate(new Vector3(0, h * rotatespeed, 0));
             Playeranim.SetBool("isrun", true);
         }
-        else if (Input.GetKey(KeyCode.D) && isdead == false)
+        else if (Input.GetKey(KeyCode.D))
         {
-            //transform.Translate(Vector3.right * Time.deltaTime * movespeed);
-            //transform.rotation = Quaternion.Euler(0, 90, 0);
+            
             transform.Rotate(new Vector3(0, h * rotatespeed, 0));
             Playeranim.SetBool("isrun", true);
         }
@@ -198,7 +194,7 @@ public class PlayerScript : MonoBehaviour
         if (!isdead)
         {
             Playeranim.SetTrigger("Death");
-            Destroy(gameObject, 8);
+            Destroy(gameObject, 4);
             isdead = true;
         }
     }
