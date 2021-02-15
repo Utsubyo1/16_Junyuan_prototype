@@ -16,4 +16,12 @@ public class MainmenuScript : MonoBehaviour
         Debug.Log("QUITTING . . .");
         Application.Quit();
     }
+    public void LoadMenu()
+    {
+        //change scene to menu scene
+        Time.timeScale = 1f;
+        PauseMenuScript.GameisPaused = false;
+        SceneManager.LoadScene("MenuScene");
+        //Debug.Log("Menu");
+    }
 }

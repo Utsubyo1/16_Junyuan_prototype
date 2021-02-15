@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -153,7 +154,7 @@ public class PlayerScript : MonoBehaviour
             rotatespeed = 2f;
         }
         //When press and hold will Fire the Gun and spawn bullet
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0) && isreloading == false )
+        if (Input.GetKeyDown(KeyCode.Space) && isreloading == false || Input.GetKeyDown(KeyCode.Mouse0) && isreloading == false )
         {
             Instantiate(bulletPrefab, bulletSpawn.transform.position, transform.rotation);
             Playeranim.SetTrigger("Fire");
@@ -190,7 +191,7 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Enemy" && EnemyScript.nodmg == false)
+        if (collision.gameObject.tag == "Enemy")
         {
             takeDamage(10);
             Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
@@ -203,6 +204,7 @@ public class PlayerScript : MonoBehaviour
             Playeranim.SetTrigger("Death");
             Destroy(gameObject, 4);
             isdead = true;
+            SceneManager.LoadScene("LoseScene");
         }
     }
    

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour
 {
-    public static bool nodmg = false;
+    
     //target Player
     GameObject target;
     //find Hpbar canvas
@@ -13,6 +14,9 @@ public class EnemyScript : MonoBehaviour
     //healthbar and text
     public Text Hptext;
     public HealthbarScript healthBar;
+
+    //Ai;
+    public NavMeshAgent Enemy;
 
     int maxHealth = 50; // Max health
     int currentHealth; // current health
@@ -68,10 +72,11 @@ public class EnemyScript : MonoBehaviour
         if (PlayerScript.Playerdeath == false && isdead == false && PauseMenuScript.GameisPaused == false)
         {
             //Enmey move towards the player
-            Vector3 pos = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.fixedDeltaTime);
-            rb.MovePosition(pos);
-            transform.LookAt(target.transform.position);
-            
+            // Vector3 pos = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.fixedDeltaTime);
+            // rb.MovePosition(pos);
+            //transform.LookAt(target.transform.position);
+            Enemy.SetDestination(target.transform.position);
+
         }
     }
 
@@ -103,10 +108,10 @@ public class EnemyScript : MonoBehaviour
             //when enemy lose all Hp destroy Hp text first then destory gameobject
             enemyanim.SetTrigger("Death");
             Destroy(hpbar);
-            nodmg = true;
-            Destroy(gameObject, 2);
+           
+            Destroy(gameObject, 1.5f);
             isdead = true;
-            nodmg = false;
+            
         }
     }
 }
