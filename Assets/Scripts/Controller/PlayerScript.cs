@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class PlayerScript : MonoBehaviour
 {
     public static bool Playerdeath;
-    public static PlayerScript Score;
+    public static  PlayerScript  Score;
     
     //movement and rotate speed
     float movespeed = 5f; // movement speed
-    float rotatespeed = 2f; // rotatespeed
+    float rotatespeed = 3f; // rotatespeed
 
     //Ammo 
     public int maxAmmo = 7; // maxammo
@@ -47,7 +47,9 @@ public class PlayerScript : MonoBehaviour
     public GameObject bulletSpawn;
 
     bool isdead = false;
-    
+
+    //Win condition
+    float WinScore = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -99,6 +101,11 @@ public class PlayerScript : MonoBehaviour
                 isdead = true;
 
             }
+            if(WinScore == 40)
+            {
+                SceneManager.LoadScene("WinScene");
+            }
+            
         }
     }
     void movement()
@@ -146,12 +153,12 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             movespeed = 10f;
-            rotatespeed = 3f;
+            
         }
         else
         {
             movespeed = 5f;
-            rotatespeed = 2f;
+            
         }
         //When press and hold will Fire the Gun and spawn bullet
         if (Input.GetKeyDown(KeyCode.Space) && isreloading == false || Input.GetKeyDown(KeyCode.Mouse0) && isreloading == false )
@@ -211,6 +218,7 @@ public class PlayerScript : MonoBehaviour
     public void AddScore()
     {
         Scorecount += 1;
+        WinScore++;
         Scoretext.GetComponent<Text>().text = "Zombies Kill:" + Scorecount;
     }
 }
