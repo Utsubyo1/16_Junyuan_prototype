@@ -106,12 +106,13 @@ public class PlayerScript : MonoBehaviour
                 isdead = true;
 
             }
-            if(WinScore >= 30)
+            if(WinScore == 30)
             {
                 
                 Debug.Log("GET TO THE CHOPPER");
                 
                 GotoHeli = true;
+                
             }
             
         }
@@ -248,5 +249,6 @@ public class PlayerScript : MonoBehaviour
         WinScore++;
         Scoretext.GetComponent<Text>().text = "Zombies Kill:" + Scorecount;
     }
+   
    
 }
