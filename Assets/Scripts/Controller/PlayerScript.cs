@@ -34,7 +34,8 @@ public class PlayerScript : MonoBehaviour
     public Text Hptext;
     public Text Scoretext;
     public Text Ammotext;
-    
+   
+    //script
     public HealthbarScript healthBar;
 
 
@@ -50,6 +51,7 @@ public class PlayerScript : MonoBehaviour
 
     //Win condition
     float WinScore = 0f;
+    bool GotoHeli = false;
 
     // Start is called before the first frame update
     void Start()
@@ -66,10 +68,13 @@ public class PlayerScript : MonoBehaviour
 
         //set Text
         Scoretext.GetComponent<Text>().text = "Zombies Kill: " + Scorecount;
+
+        //
         if(Score == null)
         {
             Score = this;
         }
+
         //Player death true or false
         Playerdeath = false;
     }
@@ -101,9 +106,12 @@ public class PlayerScript : MonoBehaviour
                 isdead = true;
 
             }
-            if(WinScore == 40)
+            if(WinScore >= 30)
             {
-                SceneManager.LoadScene("WinScene");
+                
+                Debug.Log("GET TO THE CHOPPER");
+                
+                GotoHeli = true;
             }
             
         }
@@ -176,6 +184,14 @@ public class PlayerScript : MonoBehaviour
             StartCoroutine(Reload());
             return;
         }
+
+        //Cheat
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Scorecount += 10;
+            WinScore += 10;
+            Scoretext.GetComponent<Text>().text = "Zombies Kill:" + Scorecount;
+        }
     }
     //Reload
     IEnumerator Reload()
@@ -204,8 +220,18 @@ public class PlayerScript : MonoBehaviour
             Hptext.GetComponent<Text>().text = (maxHealth + "/" + currentHealth);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Helicopter" && GotoHeli == true)
+        {
+            SceneManager.LoadScene("WinScene");
+        }
+    }
+    
     void Die()
     {
+        //Death state
         if (!isdead)
         {
             Playeranim.SetTrigger("Death");
@@ -217,8 +243,10 @@ public class PlayerScript : MonoBehaviour
    
     public void AddScore()
     {
+        //Score
         Scorecount += 1;
         WinScore++;
         Scoretext.GetComponent<Text>().text = "Zombies Kill:" + Scorecount;
     }
+   
 }

@@ -24,7 +24,7 @@ public class EnemyScript : MonoBehaviour
     public float deathtime = 10f; // deathTime
 
 
-    float speed = 5f; // move speed
+    //float speed = 5f; // move speed
     Rigidbody rb;
     Animator enemyanim;
     AudioSource audiosource;
